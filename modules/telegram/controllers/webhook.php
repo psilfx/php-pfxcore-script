@@ -20,7 +20,7 @@
 			return $this->_Action( $app->Webhook() );
 		}
 		
-		private function _Action( $webhook ): string {
+		private function _Action( object $webhook ): string {
 			switch ( $this->_action ) {
 				case "SetWebhook":
 					return $webhook->SetWebhook( $this->_options[ 'url' ] );
@@ -35,6 +35,7 @@
 					return $webhook->GetWebhookInfo();
 				break;
 			}
+			return "";
 		}
 	}
 ?>

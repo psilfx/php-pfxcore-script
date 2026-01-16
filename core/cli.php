@@ -70,7 +70,7 @@
 		}
 		public static function GetAppInfo( string $destination , string $name ): array {
 			$path  = _root_dir . DS . $destination . DS . $name . DS . 'language' . DS . Cli::Language() . '.php';
-			$info  = ( is_file( $path ) ) ? require_once $path : array( 'title' => '' , 'description' => '' , 'icon' => '' );
+			$info  = ( is_file( $path ) ) ? require $path : array( 'title' => '' , 'description' => '' , 'icon' => '' );
 			$info += array( 'module' => $name );
 			return $info;
 		}

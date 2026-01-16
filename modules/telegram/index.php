@@ -4,6 +4,7 @@
 	class AppModulesTelegram extends Application {
 		
 		private object $_webhook;
+		private object $_bot;
 		private object $_controller;
 		//private object $_access;
 		private string $_apikey = '';
@@ -36,8 +37,15 @@
 			return $this->_webhook;
 		}
 		
+		public function Bot(): object {
+			return $this->_bot;
+		}
+		
 		public function LoadWebhook(): void {
 			$this->_webhook = $this->_exec->Load( 'models' , 'webhook' );
+		}
+		public function LoadBot(): void {
+			$this->_bot = $this->_exec->Load( 'models' , 'bot' );
 		}
 		
 		private function _GetPresets() {

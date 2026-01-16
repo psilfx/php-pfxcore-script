@@ -7,14 +7,17 @@
 			$app       = $this->_exec->App();
 			$document  = $app->GetDocument();
 			$positions = $app->GetPositions();
+			$handlers  = _root_dir .DS . $app->GetTemplatePath() . 'handlers' . DS;
 			foreach( $positions as $position ) {
 				$name       = $position[ 'name' ];
 				$module     = $position[ 'module' ];
 				$controller = $position[ 'controller' ];
 				$options    = $position[ 'options' ];
+				$handler    = $handlers . $name . '.php';
 				$options   += [ 'controller' => $controller ];
 				$app        = $cli->GetApp( $cli->Load( 'modules' , $module , $options ) );
 				$app->Controller();
+				$app->TemplateHandler( $handler );
 				$document->AddHTMLtoPosition( $name , $app->Response() . "\n" );
 			}
 			$app = Cli::Auth();

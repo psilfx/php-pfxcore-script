@@ -29,6 +29,10 @@
 		
 		public function GetLang( string $key ): string {
 			return $this->_exec->Lang( $key );
-		} 
+		}
+		/* Обработчик внутри шаблона */
+		public function TemplateHandler( $handlerPath ) {
+			if( is_file( $handlerPath ) ) include $handlerPath;
+		}
 	}
 ?>

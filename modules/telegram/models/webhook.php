@@ -25,6 +25,9 @@
 		public function GetUpdates(): string {
 			return $this->Send( 'getUpdates' );
 		}
+		public function SendMessageToBot( array $message ): string {
+			return $this->Send( 'sendMessage' , json_encode( $message ) );
+		}
 		/**
 		 ** @desc Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
 		 **/
@@ -38,9 +41,9 @@
 			return $this->Send( 'setWebHook?url=' . $urltoset );
 		}
 		
-		public function Send( $url ): string {
+		public function Send( string $url , string $json = "" ): string {
 			$link = $this->_GetTelegramLink( $url );
-			return Cli::Curl( $link );
+			return Cli::Curl( $link , $json );
 		}
 		
 		private function _GetTelegramLink( $url ): string {

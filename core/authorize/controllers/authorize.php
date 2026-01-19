@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 	
-	class AppCoreAuthorizeControllersAuth extends Controller {
+	class AppCoreAuthorizeControllersAuthorize extends Controller {
 		
 		private array $_user;
 		private bool  $_admin;
@@ -16,6 +16,7 @@
 			$this->_user   = $this->CheckUserByPassword( $authModel->GetUserFromDbByName( 'Losos' ) , 'pukito' );
 			$this->_admin  = $this->CheckUserByAdmin( $this->_user );
 			$this->_active = $this->CheckUserByActive( $this->_user );
+			return ( $this->_admin ) ? $this->_exec->GetView( 'info' , $this->_user ) : $this->_exec->GetView( 'form' );
 		}
 		public function CheckUserByPassword( array $user , string $password  ): array {
 			return ( password_verify( $password , Cli::ArraysLib()->Val( 'password' , $user ) ) ) ? $user : array();

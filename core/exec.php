@@ -17,6 +17,7 @@
 		private int    $_clikey; //Ключ исполнения в cli
 		private array  $_language; //Информация о модуле
 		private array  $_tempdata = array(); //Для сохранения между модулями 
+		private array  $_aliases = array(); //Для сохранения ссылок на объекты, чтобы получать между модулями
 		/**
 		 ** @desc Основной конструктор класса
 		 ** @vars (string) destination - назначение например "core", (string) name - название приложения, (int) clikey - ключ или адрес запуска в cli, (array) options - доп. настройки приложения
@@ -38,9 +39,10 @@
 			//Загружаем приложение
 			$this->_appExecName = 'App' . ucfirst( $destination ) . ucfirst( $this->_RemoveSlashesFromName( $name ) );
 			$this->_app         = Cli::New( $this->_appExecName , $options );
+			$controller         = $this->Load( "controllers" , $name );
 			$this->_app->SetExec( $this );
+			$this->_app->SetController( $controller );
 			$this->_app->Main();
-			
 		}
 		private function _LoadLanguage(): void {
 			$this->_language = Cli::GetAppInfo( $this->_destination , $this->_name );
@@ -67,6 +69,7 @@
 			$this->_workdata[ $key ]->SetName( $modelName );
 			$this->_workdata[ $key ]->SetKey( $key );
 			$this->_workdata[ $key ]->SetExec( $this );
+			$this->SetObjectAlias( $destination . '_' . $name , $this->_workdata[ $key ] );
 			return $this->_workdata[ $key ];
 		}
 		/**
@@ -106,6 +109,15 @@
 		public function ReadTempData( string $key ): array {
 			if( !isset( $this->_tempdata[ $key ] ) ) return array();
 			return $this->_tempdata[ $key ];
+		}
+		public function SetObjectAlias( string $alias , object &$obj ): bool {
+			if( isset( $this->_aliases[ $alias ] ) ) return false;
+			$this->_aliases[ $alias ] = $obj;
+			return true;
+		}
+		public function GetObjectByAlias( string $alias ): object {
+			if( !isset( $this->_aliases[ $alias ] ) ) return null;
+			return $this->_aliases[ $alias ];
 		}
 		/**
 		 ** @desc Возвращает ключ cli

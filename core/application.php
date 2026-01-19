@@ -10,23 +10,33 @@
 		protected object $_exec;
 		//Переключатель, можно инициализировать только 1 раз
 		private bool $_execsw = false;
+		//Основной контроллер приложения
+		protected object $_controller;
+		private bool $_controlsw = false;
+		//Ответ приложения
+		private string $_response;
 		/**
 		 ** @desc Задаёт исполняемый объект
 		 **/
-		public function SetExec( &$execObject ) {
+		public function SetExec( &$execObject ): void {
 			if( $this->_execsw ) return;
 			$this->_exec   = $execObject;
 			$this->_execsw = true;
+		}
+		public function SetController( object &$controller ): void {
+			if( $this->_controlsw ) return;
+			$this->_controller = $controller;
+			$this->_controlsw  = true;
 		}
 		/**
 		 ** @desc Обязательный метод, исполняется 1 раз при загрузки приложения, точка входа по аналогии с языком C
 		 **/
 		abstract public function Main();
 		
-		abstract public function Controller();
-		
-		abstract public function Response(): string;
-		
+		public function Controller(): void {
+			$this->_response = $this->_controller->Main();
+		}
+
 		public function GetLang( string $key ): string {
 			return $this->_exec->Lang( $key );
 		}
@@ -36,6 +46,9 @@
 			$exec = $this->_exec;
 			$app  = $exec->App();
 			include $handlerPath;
+		}
+		public function Response(): string {
+			return $this->_response;
 		}
 	}
 ?>

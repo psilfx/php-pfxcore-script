@@ -26,6 +26,7 @@
 			$this->_modules      = $this->_exec->Load( 'models'      , 'modules' );
 			$this->_document     = $this->_exec->Load( 'models'      , 'document' );
 			$this->_loader       = $this->_exec->Load( 'controllers' , 'loader' );
+			$this->_loader->Main();
 		}
 		
 		private function _AddTemplateAssetsToDocument(): void {
@@ -41,11 +42,7 @@
 		public function AddJs( array $js ): void {
 			$this->_document->AddCss( $js );
 		}
-		
-		public function Controller(): void {
-			$this->_loader->Main();
-		}
-		
+
 		public function View(): string {
 			return $this->_document->View( _root_dir .DS . $this->GetTemplatePath() . 'index.php' );
 		}

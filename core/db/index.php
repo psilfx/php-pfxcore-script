@@ -13,11 +13,7 @@
 		public function Main() {
 			$this->_db = $this->_exec->Load( 'models' , _db_client );
 		}
-		
-		public function Controller() {
-			
-		}
-		
+
 		public function Query( string $sql , array $values = array() ): void {
 			$this->_db->Query( $sql , $values );
 		}
@@ -39,9 +35,6 @@
 				$params[ $key ] = $val;
 			}
 			return array( $placeholders , $params );
-		}
-		public function Response(): string {
-			
 		}
 	}
 ?>

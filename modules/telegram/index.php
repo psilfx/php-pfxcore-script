@@ -5,7 +5,7 @@
 		
 		private object $_webhook;
 		private object $_bot;
-		private object $_controller;
+		//private object $_controller;
 		//private object $_access;
 		private string $_apikey = '';
 		private array  $_options;
@@ -15,16 +15,19 @@
 		
 		public function __construct( $options ) {
 			$this->_options = $options;
+			
 		}
 		public function Main() {
 			$this->_GetPresets();
 			$controller        = $this->_presetControllers[ (int)$this->_options[ 'controller' ] ];
-			$this->_controller = $this->_exec->Load( 'controllers' , $controller , $this->_options );
-			$this->_response   = $this->_controller->Main();
+			$this->_LoadModels();
+			//$this->_controller = $this->_exec->Load( 'controllers' , $controller , $this->_options );
+			//$this->_response   = $this->_controller->Main();
 		}
 		
-		public function Controller(): void {
-			
+		private function _LoadModels() {
+			$webhook = $this->_exec->Load( 'models' , 'webhook' );
+			$bot     = $this->_exec->Load( 'models' , 'bot' );
 		}
 		
 		public function SetApiKey( string $apikey ): void {
@@ -50,10 +53,6 @@
 		
 		private function _GetPresets() {
 			$this->_presetControllers = $this->_exec->GetPreset( 'controllers' );
-		}
-		
-		public function Response(): string {
-			return $this->_response;
 		}
 	}
 ?>

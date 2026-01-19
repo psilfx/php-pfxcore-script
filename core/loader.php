@@ -1,6 +1,6 @@
 <?php
 	defined( "exec" ) or die();
-	
+	error_reporting( E_ALL );
 	define( 'DS' , DIRECTORY_SEPARATOR );
 	
 	require _root_dir . DS . 'core' . DS . 'config.php';

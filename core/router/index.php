@@ -14,12 +14,6 @@
 			$this->_access = $this->_exec->Load( 'controllers' , 'access' );
 		}
 		
-		public function Controller() {
-			$rootPage = $this->_http->Array()[ 0 ];
-			$this->_access->CheckAdmin( $rootPage );
-			$this->_access->CheckRest( $rootPage );
-		}
-		
 		public function String(): string {
 			return $this->_http->String();
 		}
@@ -37,9 +31,6 @@
 		}
 		public function RestApi(): bool {
 			return $this->_access->RestApi();
-		}
-		public function Response(): string {
-			
 		}
 	}
 ?>

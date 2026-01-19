@@ -4,7 +4,7 @@
 
 	$tg_app  = $this->_exec->App();
 	$webhook = $tg_app->Webhook();
-	//
+	//Грузим бота
 	$tg_bot  = $cli->GetApp( $cli->Load( 'modules' , 'telegram' , array( "controller" => 0 ) ) );
 	$tg_bot->Controller();
 	
@@ -12,12 +12,10 @@
 	$bot->AddKeyboard( array( [ "🤸 Секции" , "📅 Расписание" ] , [ "💳 Цены" , "✏️ Записаться" ] ) );
 	$ikeyboard1 = [ [ "text" => "Узнать стоимость" , "callback_data" => "get_price" ] ] ;
 	$ikeyboard2 = [ [ "text" => "Обсудить детали"  , "callback_data" => "details" ] ] ;
-	// [ {"text": "Узнать стоимость" , "callback_data": "get_price"} ] , \n [ {"text": "Обсудить детали" , "callback_data": "details"} ]
 	$keyboard = $bot->AddInlineKeyboard( array( $ikeyboard1 , $ikeyboard2 ) );
 	$bot->SetCurrentInlineKeyboard( $keyboard );
 	$bot->SetMessageText( "Test" );
-	$bot->SetChatId( 0 );
+	$bot->SetChatId( 884120555 );
 	$message = $bot->CreateResponse();
-	print_r( $webhook->SendMessageToBot( $message ) );
-	print_r( $message );
+	//$webhook->SendMessageToBot( $message );
 ?>

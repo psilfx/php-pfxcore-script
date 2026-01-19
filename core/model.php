@@ -17,6 +17,12 @@
 		private bool $_modelExecKeysw  = false;
 		private bool $_execsw          = false;
 		
+		public function GetName(): string {
+			return $this->_modelExecName;
+		}
+		public function GetKey(): int {
+			return $this->_modelExecKey;
+		}
 		public function SetName( string $name ): void {
 			$this->_SetVar( '_modelExecName' , $name );
 		}

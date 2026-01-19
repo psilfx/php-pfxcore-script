@@ -16,8 +16,8 @@
 				$handler    = $handlers . $name . '.php';
 				$options   += [ 'controller' => $controller ];
 				$app        = $cli->GetApp( $cli->Load( 'modules' , $module , $options ) );
-				$app->Controller();
 				$app->TemplateHandler( $handler );
+				$app->Controller();
 				$document->AddHTMLtoPosition( $name , $app->Response() . "\n" );
 			}
 			$app = Cli::Auth();

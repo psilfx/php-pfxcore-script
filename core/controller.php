@@ -8,5 +8,9 @@
 	abstract class Controller extends Model {
 		
 		abstract function Main();
+		
+		protected function GetModel( string $name ): object {
+			return $this->_exec->GetModelByName( $name );
+		}
 	}
 ?>

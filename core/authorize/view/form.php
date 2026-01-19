@@ -1,11 +1,6 @@
 <?php
 	defined( "exec" ) or die();
 ?>
-<style>
-	
-
-	
-</style>
 <div class="form-container block">
 	<form id="loginForm">
 		<div class="input-group">

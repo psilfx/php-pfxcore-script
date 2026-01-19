@@ -3,13 +3,13 @@
 
 	class LibraryData {
 		
-		public static function Post() {
-			print_r( $_POST );
+		public static function Post(): array {
+			return $_POST;
 		}
-		public static function Get() {
-			
+		public static function Get(): array {
+			return $_GET;
 		}
-		public static function Json() {
+		public static function Json(): array {
 			$json = file_get_contents( 'php://input' ) ?? '{}';
 			return json_decode( $json , true );
 		}

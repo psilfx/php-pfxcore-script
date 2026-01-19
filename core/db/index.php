@@ -30,6 +30,16 @@
 		public function CreateSql( array $array , string $table ): string {
 			return $this->_db->CreateSqlFromArr( $array , $table );
 		}
+		public function CreatePlaceholdersParamsFromArray( string $name , $array ): array {
+			$placeholders = array();
+			$params       = array();
+			foreach ( $array as $i => $val ) {
+				$key            = ':' . $name . $i;
+				$placeholders[] = $key;
+				$params[ $key ] = $val;
+			}
+			return array( $placeholders , $params );
+		}
 		public function Response(): string {
 			
 		}

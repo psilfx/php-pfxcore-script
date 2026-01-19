@@ -16,6 +16,7 @@
 		private array  $_workdata;
 		private int    $_clikey; //Ключ исполнения в cli
 		private array  $_language; //Информация о модуле
+		private array  $_tempdata = array(); //Для сохранения между модулями 
 		/**
 		 ** @desc Основной конструктор класса
 		 ** @vars (string) destination - назначение например "core", (string) name - название приложения, (int) clikey - ключ или адрес запуска в cli, (array) options - доп. настройки приложения
@@ -69,10 +70,42 @@
 			return $this->_workdata[ $key ];
 		}
 		/**
+		 ** @desc Для поиска модели по имени, выдаёт первую найденную модель
+		 **/
+		public function GetModelByName( string $name ): object {
+			$modelName = $this->_appExecName . 'Models' . ucfirst( $name );
+			foreach( $this->_workdata as $data ) {
+				if( $data->GetName() == $modelName ) return $data;
+			}
+			return new StdClass;
+		}
+		/**
+		 ** @desc Для поиска контроллера по имени, выдаёт первый найденный контроллер
+		 **/
+		public function GetControllerByName( string $name ): object {
+			$controllerName = $this->_appExecName . 'Controllers' . ucfirst( $name );
+			foreach( $this->_workdata as $data ) {
+				if( $data->GetName() == $controllerName ) return $data;
+			}
+			return new StdClass;
+		}
+		/**
 		 ** @desc Возвращает точку входа в приложение
 		 **/
 		public function App(): object {
 			return $this->_app;
+		}
+		/**
+		 ** @desc Пишет временные данные, для работы между контроллерами
+		 **/
+		public function WriteTempData( string $key , array $data ): bool {
+			if( isset( $this->_tempdata[ $key ] ) ) return false;
+			$this->_tempdata[ $key ] = $data;
+			return true;
+		}
+		public function ReadTempData( string $key ): array {
+			if( !isset( $this->_tempdata[ $key ] ) ) return array();
+			return $this->_tempdata[ $key ];
 		}
 		/**
 		 ** @desc Возвращает ключ cli
@@ -86,7 +119,9 @@
 		
 		public function GetView( string $name , array $data = array() ): string {
 			ob_start();
-				$app = $this->_app;
+				$exec = $this;
+				$app  = $this->_app;
+				extract( $this->_tempdata , EXTR_PREFIX_ALL , 'temp' );
 				include $this->_dir . 'view' . DS . $name . '.php';
 				$html = ob_get_contents();
 			ob_end_clean();

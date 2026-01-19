@@ -31,8 +31,11 @@
 			return $this->_exec->Lang( $key );
 		}
 		/* Обработчик внутри шаблона */
-		public function TemplateHandler( $handlerPath ) {
-			if( is_file( $handlerPath ) ) include $handlerPath;
+		public function TemplateHandler( $handlerPath ): void {
+			if( !is_file( $handlerPath ) ) return;
+			$exec = $this->_exec;
+			$app  = $exec->App();
+			include $handlerPath;
 		}
 	}
 ?>

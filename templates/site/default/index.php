@@ -5,6 +5,7 @@
 </head>
 	<body>
 		<?php echo $this->Position( 'Telegram-Test' ); ?>
+		<?php echo $this->Position( 'page-text' ); ?>
 		<?php echo $this->Position( 'form' ); ?>
 	</body>
 </html>

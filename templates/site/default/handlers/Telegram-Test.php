@@ -15,7 +15,7 @@
 	$keyboard = $bot->AddInlineKeyboard( array( $ikeyboard1 , $ikeyboard2 ) );
 	$bot->SetCurrentInlineKeyboard( $keyboard );
 	$bot->SetMessageText( "Test" );
-	$bot->SetChatId( 884120555 );
+	$bot->SetChatId( 0 );
 	$message = $bot->CreateResponse();
 	//$webhook->SendMessageToBot( $message );
 ?>

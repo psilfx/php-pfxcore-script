@@ -23,7 +23,7 @@
 		}
 		private function _DashModule( string $module , array $options = array() ): string {
 			$cli              = Cli::GetInstance();
-			$this->_module    = $cli->GetApp( $cli->Load( 'modules' , $module . DS . 'admin' , $options ) );
+			$this->_module    = $cli->GetApp( $cli->Load( 'modules' , $module , $options , true ) );
 			$this->_metatitle = $this->_module->GetLang( 'title' );
 			$this->_module->Controller();
 			return $this->_module->Response();

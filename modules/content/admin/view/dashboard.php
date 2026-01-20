@@ -1,6 +1,6 @@
 <?php
 	defined( "exec" ) or die();
 ?>
-<div class="users">
-	Category
+<div class="content">
+	CONTENT
 </div>

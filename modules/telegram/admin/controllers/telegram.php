@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 
-	class AppModulesUsersAdminControllersLoader extends Controller {
+	class AppModulesTelegramAdminControllersTelegram extends Controller {
 		
 		private array  $_request;
 		private string $_view; //Шаблон вывода
@@ -11,19 +11,12 @@
 			$this->_request = $options[ 'request' ];
 		}
 		
-		public function Main(): void {
+		public function Main(): string {
 			$this->_data = array();
-			$this->_view = ( count( $this->_request ) < 3 ) ? $this->_Dashboard() :  $this->_Category();
+			$this->_view = ( count( $this->_request ) < 3 ) ? 'dashboard' : 'category';
+			return $this->_exec->GetView( $this->_view , $this->_data );
 		}
-		
-		private function _Dashboard(): string {
-			return 'dashboard';
-		}
-		
-		private function _Category(): string {
-			return 'category';
-		}
-		
+
 		public function View() {
 			return $this->_view;
 		}

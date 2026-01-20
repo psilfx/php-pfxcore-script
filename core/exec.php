@@ -9,6 +9,7 @@
 		private string $_dir;
 		private string $_main;
 		private string $_name;
+		private bool   $_adminPath;
 		private string $_destination;
 		private array  $_options;
 		private string $_appExecName;
@@ -22,24 +23,26 @@
 		 ** @desc Основной конструктор класса
 		 ** @vars (string) destination - назначение например "core", (string) name - название приложения, (int) clikey - ключ или адрес запуска в cli, (array) options - доп. настройки приложения
 		 **/
-		public function __construct( string $destination , string $name , int $clikey , array $options = array() ) {
+		public function __construct( string $destination , string $name , int $clikey , array $options = array() , $admin_path = false ) {
 			$this->_InitValues();
 			//Сохраняем входные данные
 			$this->_destination = $destination;
 			$this->_name        = $name;
 			$this->_clikey      = $clikey;
 			$this->_options     = $options;
+			$this->_adminPath   = $admin_path;
 			//Получаем входную точку
-			$this->_dir         = _root_dir . DS . $destination . DS . $name . DS;
+			$path_admin         = $admin_path ? 'admin' . DS : '';
+			$this->_dir         = _root_dir . DS . $destination . DS . $name . DS . $path_admin;
 			$this->_main        = $this->_dir . 'index.php';
 			//Подгружаем инфу о модуле
 			$this->_LoadLanguage();
 			//Подгружаем файл
 			Cli::IncOnce( $this->_main );
 			//Загружаем приложение
-			$this->_appExecName = 'App' . ucfirst( $destination ) . ucfirst( $this->_RemoveSlashesFromName( $name ) );
+			$this->_appExecName = 'App' . ucfirst( $destination ) . ucfirst( $this->_RemoveSlashesFromName( $name . DS . $path_admin ) );
 			$this->_app         = Cli::New( $this->_appExecName , $options );
-			$controller         = $this->Load( "controllers" , $name );
+			$controller         = $this->Load( 'controllers' , $name , $options );
 			$this->_app->SetExec( $this );
 			$this->_app->SetController( $controller );
 			$this->_app->Main();

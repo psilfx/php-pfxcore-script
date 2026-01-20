@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 
-	class AppModulesUsersAdmin extends Application {
+	class AppModulesContentAdmin extends Application {
 		
 		private array  $_options;
 		

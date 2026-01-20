@@ -32,9 +32,9 @@
 			}
 			return self::$_instance;
 		}
-		public function Load( string $destination , string $name , array $options = array() ): int {
+		public function Load( string $destination , string $name , array $options = array() , $admin_path = false ): int {
 			$key = count( self::$_instance->_exec );
-			self::$_instance->_exec[ $key ] = new Exec( $destination , $name , $key , $options );
+			self::$_instance->_exec[ $key ] = new Exec( $destination , $name , $key , $options , $admin_path );
 			return $key;
 		}
 		public function LoadLib( string $name ): int {

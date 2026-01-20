@@ -102,8 +102,16 @@
 		 ** @desc Пишет временные данные, для работы между контроллерами
 		 **/
 		public function WriteTempData( string $key , array $data ): bool {
-			if( isset( $this->_tempdata[ $key ] ) ) return false;
-			$this->_tempdata[ $key ] = $data;
+			$rewrite = ( isset( $this->_tempdata[ $key ] ) ) ? $this->_tempdata[ $key ][ 'rewrite' ] : false; //Защита от перезаписи
+			if( isset( $this->_tempdata[ $key ] ) && !$rewrite ) return false;
+			$this->_tempdata[ $key ]              = $data;
+			$this->_tempdata[ $key ][ 'rewrite' ] = $data[ 'rewrite' ] ?? false;
+			return true;
+		}
+		public function WriteTempDataValue( string $key , string $inkey , $val ): bool {
+			$rewrite = ( isset( $this->_tempdata[ $key ] ) ) ? $this->_tempdata[ $key ][ 'rewrite' ] : false; //Защита от перезаписи
+			if( ( isset( $this->_tempdata[ $key ] ) && !$rewrite ) || !isset( $this->_tempdata[ $key ] ) ) return false;
+			$this->_tempdata[ $key ][ $inkey ] = $val;
 			return true;
 		}
 		public function ReadTempData( string $key ): array {

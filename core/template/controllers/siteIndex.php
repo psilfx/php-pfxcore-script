@@ -2,7 +2,7 @@
 
 	class AppCoreTemplateControllersSiteIndex extends Controller {
 
-		public function Main() {
+		public function Main(): string {
 			$cli       = Cli::GetInstance();
 			$app       = $this->_exec->App();
 			$document  = $app->GetDocument();
@@ -22,6 +22,7 @@
 			}
 			$app = Cli::Auth();
 			$document->AddHTMLtoPosition( 'form' , $app->Response() . "\n" );
+			return "";
 		}
 	}
 ?>

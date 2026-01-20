@@ -7,7 +7,7 @@
 		private object $_positions;    //Модель вывода позиций в шаблоне
 		private object $_modules;      //Модель вывода модулей
 		private object $_document;     //Выводимы документ
-		private object $_loader;       //Контроллер загрузки
+		private object $_icontroller;
 		
 		public function __construct( array $options = array() ) {
 		}
@@ -25,8 +25,7 @@
 			$this->_positions    = $this->_exec->Load( 'models'      , 'positions' );
 			$this->_modules      = $this->_exec->Load( 'models'      , 'modules' );
 			$this->_document     = $this->_exec->Load( 'models'      , 'document' );
-			$this->_loader       = $this->_exec->Load( 'controllers' , 'loader' );
-			$this->_loader->Main();
+			$this->_icontroller  = $this->_exec->GetObjectByAlias( 'controllers_template' );
 		}
 		
 		private function _AddTemplateAssetsToDocument(): void {
@@ -43,10 +42,6 @@
 			$this->_document->AddCss( $js );
 		}
 
-		public function View(): string {
-			return $this->_document->View( _root_dir .DS . $this->GetTemplatePath() . 'index.php' );
-		}
-		
 		public function GetDocument(): object {
 			return $this->_document;
 		}
@@ -56,7 +51,7 @@
 		}
 		
 		public function GetLink( string $link = '' ): string {
-			return $this->_loader->Link() . $link;
+			return $this->_icontroller->Link() . $link;
 		}
 		
 		public function GetModules(): array {
@@ -65,12 +60,8 @@
 		public function GetTemplates(): object {
 			return $this->_templates;
 		}
-		public function GetTemplatePath(): string {
-			return $this->_loader->TemplatePath();
-		}
-		
-		public function Response(): string {
-			return $this->View();
+		public function GetTemplatePath() {
+			return $this->_icontroller->TemplatePath();
 		}
 	}
 ?>

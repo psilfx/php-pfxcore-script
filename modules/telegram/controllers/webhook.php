@@ -3,36 +3,30 @@
 	
 	class AppModulesTelegramControllersWebhook extends Controller {
 		
-		private string $_apikey;
-		private string $_action;
-		private array  $_options;
-		
-		public function __construct( array $options = array() ) {
-			$this->_apikey  = $options[ 'api-key' ];
-			$this->_action  = $options[ 'action' ] ?? null;
-			$this->_options = &$options;
+		public function __construct() {
 		}
 		
 		public function Main(): string {
-			$app = $this->_exec->App();
-			$app->LoadWebhook();
-			$app->SetApiKey( $this->_apikey );
-			return $this->_Action( $app->Webhook() );
-		}
-		
-		private function _Action( object $webhook ): string {
-			switch ( $this->_action ) {
+			$model_webhook = $this->_exec->GetObjectByAlias( 'models_webhook' );
+			$model_webhook->InitFromData();
+			switch ( $model_webhook->GetAction() ) {
 				case "SetWebhook":
-					return $webhook->SetWebhook( $this->_options[ 'url' ] );
+					return $model_webhook->SetWebhook();
 				break;
 				case "DeleteWebhook":
-					return $webhook->DeleteWebhook();
+					return $model_webhook->DeleteWebhook();
 				break;
 				case "GetUpdates":
-					return $webhook->GetUpdates();
+					return $model_webhook->GetUpdates();
 				break;
 				case "GetWebhookInfo":
-					return $webhook->GetWebhookInfo();
+					return $model_webhook->GetWebhookInfo();
+				break;
+				case "SendMessage":
+					return $model_webhook->SendMessage();
+				break;
+				case "Help":
+					return $model_webhook->Help();
 				break;
 			}
 			return "";

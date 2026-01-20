@@ -2,57 +2,32 @@
 	defined( "exec" ) or die();
 
 	class AppModulesTelegram extends Application {
-		
-		private object $_webhook;
-		private object $_bot;
-		//private object $_controller;
-		//private object $_access;
+
 		private string $_apikey = '';
 		private array  $_options;
-		private array  $_presetControllers;
-		
-		private string $_response;
 		
 		public function __construct( $options ) {
 			$this->_options = $options;
-			
-		}
-		public function Main() {
-			$this->_GetPresets();
-			$controller        = $this->_presetControllers[ (int)$this->_options[ 'controller' ] ];
-			$this->_LoadModels();
-			//$this->_controller = $this->_exec->Load( 'controllers' , $controller , $this->_options );
-			//$this->_response   = $this->_controller->Main();
 		}
 		
-		private function _LoadModels() {
-			$webhook = $this->_exec->Load( 'models' , 'webhook' );
-			$bot     = $this->_exec->Load( 'models' , 'bot' );
+		public function Main(): void {
+			$this->_LoadFiles();
+			$this->SetWebhookExecData( $this->_exec->GetPreset( 'webhook' ) );
+			$this->SetBotExecData( $this->_exec->GetPreset( 'bot' ) );
 		}
 		
-		public function SetApiKey( string $apikey ): void {
-			if( $this->_apikey != '' ) return;
-			$this->_apikey = $apikey;
-			$this->_webhook->SetApiKey( $this->_apikey );
+		private function _LoadFiles(): void {
+			$this->_exec->Load( 'models' , 'webhook' , $this->_options );
+			$this->_exec->Load( 'models' , 'bot' , $this->_options );
+			$this->_exec->Load( 'controllers' , 'webhook' );
+			$this->_exec->Load( 'controllers' , 'bot' );
 		}
 		
-		public function Webhook(): object {
-			return $this->_webhook;
+		public function SetWebhookExecData( array $data ): void {
+			$this->_exec->WriteTempData( 'data_webhook' , $data );
 		}
-		
-		public function Bot(): object {
-			return $this->_bot;
-		}
-		
-		public function LoadWebhook(): void {
-			$this->_webhook = $this->_exec->Load( 'models' , 'webhook' );
-		}
-		public function LoadBot(): void {
-			$this->_bot = $this->_exec->Load( 'models' , 'bot' );
-		}
-		
-		private function _GetPresets() {
-			$this->_presetControllers = $this->_exec->GetPreset( 'controllers' );
+		public function SetBotExecData( array $data ): void {
+			$this->_exec->WriteTempData( 'data_bot' , $data );
 		}
 	}
 ?>

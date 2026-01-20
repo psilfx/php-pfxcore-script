@@ -3,16 +3,15 @@
 	
 	class AppModulesTelegramControllersTelegram extends Controller {
 		
-		private array  $_options;
-		
-		public function __construct( array $options = array() ) {
+		public function __construct() {
 
 		}
 		
 		public function Main(): string {
-
-			return "";
+			$controller_webhook = $this->_exec->GetObjectByAlias( 'controllers_webhook' );
+			$controller_bot     = $this->_exec->GetObjectByAlias( 'controllers_bot' );
+			$this->_exec->WriteTempDataValue( 'data_webhook' , 'bot_message' , $controller_bot->Main() );
+			return $controller_webhook->Main();
 		}
-		
 	}
 ?>

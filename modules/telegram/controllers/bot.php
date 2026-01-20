@@ -3,17 +3,13 @@
 	
 	class AppModulesTelegramControllersBot extends Controller {
 		
-		private array  $_options;
-		
-		public function __construct( array $options = array() ) {
-			$this->_options = &$options;
+		public function __construct() {
 		}
 		
 		public function Main(): string {
-			$app = $this->_exec->App();
-			$app->LoadBot();
-			return "";
+			$model_bot = $this->_exec->GetObjectByAlias( 'models_bot' );
+			$model_bot->InitFromData();
+			return json_encode( $model_bot->CreateResponse() );
 		}
-		
 	}
 ?>

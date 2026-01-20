@@ -12,7 +12,7 @@
 		}
 		
 		public function Main() {
-			$authModel     = $this->_exec->App()->Auth();
+			$authModel     = $this->_exec->GetObjectByAlias( 'models_auth' );
 			$this->_user   = $this->CheckUserByPassword( $authModel->GetUserFromDbByName( 'Losos' ) , 'pukito' );
 			$this->_admin  = $this->CheckUserByAdmin( $this->_user );
 			$this->_active = $this->CheckUserByActive( $this->_user );

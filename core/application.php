@@ -11,7 +11,7 @@
 		//Переключатель, можно инициализировать только 1 раз
 		private bool $_execsw = false;
 		//Основной контроллер приложения
-		protected object $_controller;
+		private object $_controller;
 		private bool $_controlsw = false;
 		//Ответ приложения
 		private string $_response;

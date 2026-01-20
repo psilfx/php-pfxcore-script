@@ -3,29 +3,26 @@
 
 	class AppCoreAuthorize extends Application {
 		
-		private object $_auth;
+		private object $_icontroller;
 		
 		public function __construct() {
 			
 		}
 		public function Main() {
-			$this->_auth = $this->_exec->Load( 'models' , 'auth' );
+			$this->_auth        = $this->_exec->Load( 'models' , 'auth' );
+			$this->_icontroller = $this->_exec->GetObjectByAlias( 'controllers_authorize' );
 		}
 
-		public function Auth(): object {
-			return $this->_auth;
-		}
-		
 		public function User(): array {
-			return $this->_controller->User();
+			return $this->_icontroller->User();
 		}
 		
 		public function Admin(): bool {
-			return $this->_controller->Admin();
+			return $this->_icontroller->Admin();
 		}
 		
 		public function Rest(): bool {
-			return $this->_controller->Rest();
+			return $this->_icontroller->Rest();
 		}
 	}
 ?>

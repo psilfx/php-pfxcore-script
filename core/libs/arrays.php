@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 
-	class LibraryArrays {
+	class LibraryArrays extends Library {
 		public static function CheckBool( string $key , array $arr ): bool {
 			return ( isset( $arr[ $key ] ) ) ? 1 : 0;
 		}

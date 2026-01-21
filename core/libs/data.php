@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 
-	class LibraryData {
+	class LibraryData extends Library {
 		
 		public static function Post(): array {
 			return $_POST;

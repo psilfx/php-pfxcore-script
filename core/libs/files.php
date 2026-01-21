@@ -1,7 +1,7 @@
 <?php
 	defined( "exec" ) or die();
 
-	class LibraryFiles {
+	class LibraryFiles extends Library {
 		public static function FilesListFromDir( string $dir , string $extension = '' ): array {
 			return glob( $dir . '*' . $extension ) ?? array();
 		}

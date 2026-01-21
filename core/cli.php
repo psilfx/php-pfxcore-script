@@ -38,10 +38,13 @@
 			return $key;
 		}
 		public function LoadLib( string $name ): int {
-			require_once _root_dir . DS . 'core' . DS . 'libs' . DS . $name . '.php';
+			$path = _root_dir . DS . 'core' . DS . 'libs' . DS;
+			require_once $path . $name . '.php';
 			$key = count( self::$_instance->_libraries );
-			$lib = 'Library' . $name;
+			$lib = 'Library' . ucfirst( $name );
 			self::$_instance->_libraries[ $key ] = new $lib;
+			self::$_instance->_libraries[ $key ]->SetName( $name );
+			self::$_instance->_libraries[ $key ]->SetDir( $path );
 			return $key;
 		}
 		
@@ -103,6 +106,9 @@
 		}
 		public static function FilesLib(): object {
 			return self::$_instance->_libraries[ _cli_files_lib_key ];
+		}
+		public static function AdminLib(): object {
+			return self::$_instance->_libraries[ _cli_admin_lib_key ];
 		}
 	}
 ?>

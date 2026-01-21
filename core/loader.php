@@ -9,12 +9,14 @@
 	require _root_dir . DS . 'core' . DS . 'model.php';
 	require _root_dir . DS . 'core' . DS . 'controller.php';
 	require _root_dir . DS . 'core' . DS . 'application.php';
+	require _root_dir . DS . 'core' . DS . 'library.php';
 	
 	$cli = Cli::GetInstance();
 	
 	define( '_cli_arrays_lib_key' , $cli->LoadLib( 'arrays' ) );
 	define( '_cli_files_lib_key'  , $cli->LoadLib( 'files' ) );
 	define( '_cli_data_lib_key'   , $cli->LoadLib( 'data' ) );
+	define( '_cli_admin_lib_key'  , $cli->LoadLib( 'admin' ) );
 	
 	define( '_cli_db_key'       , $cli->Load( 'core' , 'db'        , array() ) );
 	define( '_cli_router_key'   , $cli->Load( 'core' , 'router'    , array() ) );

@@ -2,5 +2,5 @@
 	defined( "exec" ) or die();
 ?>
 <div class="users">
-	Category
+	Users
 </div>

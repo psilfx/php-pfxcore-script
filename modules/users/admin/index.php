@@ -9,7 +9,7 @@
 			$this->_options = $options;
 		}
 		public function Main() {
-			
+			$this->_exec->Load( 'models' , 'category' , array() , false );
 		}
 	}
 ?>

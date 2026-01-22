@@ -7,12 +7,15 @@
 	 **/
 	class Exec {
 		private string $_dir;
+		private string $_dir_admin;
 		private string $_main;
 		private string $_name;
 		private bool   $_adminPath;
 		private string $_destination;
 		private array  $_options;
 		private string $_appExecName;
+		private string $_appExecNameAdmin;
+		private string $_appExecNameCurr;
 		private object $_app;
 		private array  $_workdata;
 		private int    $_clikey; //Ключ исполнения в cli
@@ -32,17 +35,20 @@
 			$this->_options     = $options;
 			$this->_adminPath   = $admin_path;
 			//Получаем входную точку
-			$path_admin         = $admin_path ? 'admin' . DS : '';
-			$this->_dir         = _root_dir . DS . $destination . DS . $name . DS . $path_admin;
-			$this->_main        = $this->_dir . 'index.php';
+			$this->_dir_admin   = $admin_path ? 'admin' . DS : '';
+			$this->_dir         = _root_dir . DS . $destination . DS . $name . DS;
+			$this->_dir_view    = _root_dir . DS . $destination . DS . $name . DS . $this->_dir_admin . 'view' . DS;
+			$this->_main        = $this->_dir . $this->_dir_admin . 'index.php';
 			//Подгружаем инфу о модуле
 			$this->_LoadLanguage();
 			//Подгружаем файл
 			Cli::IncOnce( $this->_main );
 			//Загружаем приложение
-			$this->_appExecName = 'App' . ucfirst( $destination ) . ucfirst( $this->_RemoveSlashesFromName( $name . DS . $path_admin ) );
-			$this->_app         = Cli::New( $this->_appExecName , $options );
-			$controller         = $this->Load( 'controllers' , $name , $options );
+			$this->_appExecName      = 'App' . ucfirst( $destination ) . ucfirst( $this->_RemoveSlashesFromName( $name ) );
+			$this->_appExecNameAdmin = $this->_appExecName . 'Admin';
+			$this->_appExecNameCurr  = $admin_path ? $this->_appExecNameAdmin : $this->_appExecName;
+			$this->_app              = Cli::New( $this->_appExecNameCurr , $options );
+			$controller              = $this->Load( 'controllers' , $name , $options , $this->_adminPath );
 			$this->_app->SetExec( $this );
 			$this->_app->SetController( $controller );
 			$this->_app->Main();
@@ -64,10 +70,12 @@
 		 ** @vars (string) destination - назначение например "core", (string) name - название приложения
 		 ** @return (object) Возвращает исполняемый класс из подгружаемого файла
 		 **/
-		public function Load( string $destination , string $name , array $options = array() ): object {
-			Cli::IncOnce( $this->_dir . $destination . DS . $name . '.php' );
+		public function Load( string $destination , string $name , array $options = array() , bool $admin_path = null ): object {
+			$admin_path             = $admin_path ? $this->_adminPath : $admin_path;
+			$this->_appExecNameCurr = $admin_path ? $this->_appExecNameAdmin : $this->_appExecName;
+			Cli::IncOnce( $this->_dir . ( $admin_path ? $this->_dir_admin : '' ) . $destination . DS . $name . '.php' );
 			$key                     = count( $this->_workdata );
-			$modelName               = $this->_appExecName . ucfirst( $destination ) . ucfirst( $name );
+			$modelName               = $this->_appExecNameCurr . ucfirst( $destination ) . ucfirst( $name );
 			$this->_workdata[ $key ] = Cli::New( $modelName , $options );
 			$this->_workdata[ $key ]->SetName( $modelName );
 			$this->_workdata[ $key ]->SetKey( $key );
@@ -79,7 +87,7 @@
 		 ** @desc Для поиска модели по имени, выдаёт первую найденную модель
 		 **/
 		public function GetModelByName( string $name ): object {
-			$modelName = $this->_appExecName . 'Models' . ucfirst( $name );
+			$modelName = $this->_appExecNameCurr . 'Models' . ucfirst( $name );
 			foreach( $this->_workdata as $data ) {
 				if( $data->GetName() == $modelName ) return $data;
 			}
@@ -145,7 +153,7 @@
 				$exec = $this;
 				$app  = $this->_app;
 				extract( $this->_tempdata , EXTR_PREFIX_ALL , 'temp' );
-				include $this->_dir . 'view' . DS . $name . '.php';
+				include $this->_dir_view . $name . '.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			return $html;

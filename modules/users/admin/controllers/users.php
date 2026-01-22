@@ -5,16 +5,34 @@
 		
 		private array  $_request;
 		private string $_view; //Шаблон вывода
-		private array  $_data; //Данные на вывод
 		
 		public function __construct( array $options = array() ) {
 			$this->_request = $options[ 'request' ];
 		}
-		
 		public function Main(): string {
-			$this->_data = array();
-			$this->_view = ( count( $this->_request ) < 3 ) ? 'dashboard' :  'category';
-			return $this->_exec->GetView( $this->_view , $this->_data );
+			$this->_GetView();
+			return $this->_exec->GetView( $this->_view );
+		}
+		private function _GetView(): void {
+			$count       = count( $this->_request );
+			$this->_view = ( $count < 3 ) ? $this->_GetViewData( 'dashboard' ) : ( $count < 4 ? $this->_GetViewData( $this->_request[ 2 ] ) : '' );
+		}
+		private function _GetViewData( string $view ): string {
+			switch ( $view ) {
+				case 'dashboard' :
+					$router = Cli::Router();
+					$link   = $router->String();
+					$links  = array( 'categories' => $link . DS . 'categories' ,
+									 'users'      => $link . DS . 'users' );
+					$this->_exec->WriteTempData( 'links' , $links );
+				break;
+				case 'categories' :
+					$categoryModel = $this->_exec->GetObjectByAlias( 'models_category' );
+					$categories    = $categoryModel->GetAllCategories();
+					$this->_exec->WriteTempData( 'categories' , $categories );
+				break;
+			}
+			return $view;
 		}
 	}
 ?>

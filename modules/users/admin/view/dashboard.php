@@ -1,6 +1,9 @@
-<?php
-	defined( "exec" ) or die();
-?>
+<?php defined( "exec" ) or die(); ?>
 <div class="users">
-	Users
+	<div class="users-category">
+		<a href="<?php echo $temp_links[ 'users' ]; ?>">Список пользователей</a>
+	</div>
+	<div class="users-category">
+		<a href="<?php echo $temp_links[ 'categories' ]; ?>">Категории пользователей</a>
+	</div>
 </div>

@@ -62,5 +62,9 @@
 		public function PageNum(): int {
 			return $this->_pagenum;
 		}
+		public function IdNum(): int {
+			if( !str_contains( $this->_page , _id ) ) return null;
+			return (int)explode( '-' , $this->_page )[ 1 ];
+		}
 	}
 ?>

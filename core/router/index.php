@@ -26,6 +26,9 @@
 		public function PageNum(): int {
 			return $this->_http->PageNum();
 		}
+		public function IdNum(): int {
+			return $this->_http->IdNum();
+		}
 		public function Admin(): bool {
 			return $this->_access->Admin();
 		}

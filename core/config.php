@@ -11,6 +11,7 @@
 	
 	//Страницы
 	define( '_page'          , 'page' );
+	define( '_id'            , 'id' );
 	define( '_administrator' , 'zalupa' );
 	//REST
 	define( '_restapi'            , 'rest' );

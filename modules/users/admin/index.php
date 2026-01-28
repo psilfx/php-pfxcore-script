@@ -10,6 +10,7 @@
 		}
 		public function Main() {
 			$this->_exec->Load( 'models' , 'category' , array() , false );
+			$this->_exec->Load( 'models' , 'user' , array() , false );
 		}
 	}
 ?>

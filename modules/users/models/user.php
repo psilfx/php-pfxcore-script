@@ -19,6 +19,11 @@
 								ON		`u`.`category` = `c`.`id` ";
 		}
 		
+		public function GetAllUsers(): array {
+			$this->_db->Query( $this->_userSql , array() );
+			return $this->_db->Array();
+		}
+		
 		public function GetUserFromDbByName( string $name ): array {
 			return $this->_DoRequest( $this->_userSql . "WHERE `u`.`name` = :name " , array( ':name' => $name ) );
 		}

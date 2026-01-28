@@ -21,6 +21,7 @@
 		private int    $_clikey; //Ключ исполнения в cli
 		private array  $_language; //Информация о модуле
 		private array  $_tempdata = array(); //Для сохранения между модулями 
+		private array  $_temprewrite = array();
 		private array  $_aliases = array(); //Для сохранения ссылок на объекты, чтобы получать между модулями
 		/**
 		 ** @desc Основной конструктор класса
@@ -112,15 +113,15 @@
 		/**
 		 ** @desc Пишет временные данные, для работы между контроллерами
 		 **/
-		public function WriteTempData( string $key , array $data ): bool {
-			$rewrite = ( isset( $this->_tempdata[ $key ] ) ) ? $this->_tempdata[ $key ][ 'rewrite' ] : false; //Защита от перезаписи
+		public function WriteTempData( string $key , array $data , bool $rewritable = false ): bool {
+			$rewrite = ( isset( $this->_temprewrite[ $key ] ) ) ? $this->_temprewrite[ $key ] : $rewritable; //Защита от перезаписи
 			if( isset( $this->_tempdata[ $key ] ) && !$rewrite ) return false;
-			$this->_tempdata[ $key ]              = $data;
-			$this->_tempdata[ $key ][ 'rewrite' ] = $data[ 'rewrite' ] ?? false;
+			$this->_tempdata[ $key ]    = $data;
+			$this->_temprewrite[ $key ] = $rewritable;
 			return true;
 		}
 		public function WriteTempDataValue( string $key , string $inkey , $val ): bool {
-			$rewrite = ( isset( $this->_tempdata[ $key ] ) ) ? $this->_tempdata[ $key ][ 'rewrite' ] : false; //Защита от перезаписи
+			$rewrite = ( isset( $this->_temprewrite[ $key ] ) ) ? $this->_temprewrite[ $key ] : false; //Защита от перезаписи
 			if( ( isset( $this->_tempdata[ $key ] ) && !$rewrite ) || !isset( $this->_tempdata[ $key ] ) ) return false;
 			$this->_tempdata[ $key ][ $inkey ] = $val;
 			return true;
@@ -160,7 +161,7 @@
 		}
 		
 		public function Lang( string $key ): string {
-			return $this->_language[ $key ] ?? '';
+			return $this->_language[ $key ] ?? $key;
 		}
 		
 		public function GetPreset( string $name ): array {

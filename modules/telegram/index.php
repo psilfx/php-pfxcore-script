@@ -24,10 +24,10 @@
 		}
 		
 		public function SetWebhookExecData( array $data ): void {
-			$this->_exec->WriteTempData( 'data_webhook' , $data );
+			$this->_exec->WriteTempData( 'data_webhook' , $data , true );
 		}
 		public function SetBotExecData( array $data ): void {
-			$this->_exec->WriteTempData( 'data_bot' , $data );
+			$this->_exec->WriteTempData( 'data_bot' , $data , true );
 		}
 	}
 ?>

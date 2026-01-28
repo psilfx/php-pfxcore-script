@@ -15,13 +15,14 @@
 		}
 		private function _GetView(): void {
 			$count       = count( $this->_request );
-			$this->_view = ( $count < 3 ) ? $this->_GetViewData( 'dashboard' ) : ( $count < 4 ? $this->_GetViewData( $this->_request[ 2 ] ) : '' );
+			$view        = ( $count < 3 ) ? 'dashboard' : ( $count < 4 ? $this->_request[ 2 ] : _id . DS . $this->_request[ 2 ] );
+			$this->_view = $this->_GetViewData( $view );
 		}
 		private function _GetViewData( string $view ): string {
+			$router = Cli::Router();
+			$link   = $router->String();
 			switch ( $view ) {
 				case 'dashboard' :
-					$router = Cli::Router();
-					$link   = $router->String();
 					$links  = array( 'categories' => $link . DS . 'categories' ,
 									 'users'      => $link . DS . 'users' );
 					$this->_exec->WriteTempData( 'links' , $links );
@@ -29,7 +30,30 @@
 				case 'categories' :
 					$categoryModel = $this->_exec->GetObjectByAlias( 'models_category' );
 					$categories    = $categoryModel->GetAllCategories();
+					foreach( $categories as &$category ) {
+						$category[ 'link' ] = $link . DS . 'id-' . $category[ 'id' ];
+					}
 					$this->_exec->WriteTempData( 'categories' , $categories );
+				break;
+				case 'users' :
+					$userModel = $this->_exec->GetObjectByAlias( 'models_user' );
+					$users     = $userModel->GetAllUsers();
+					foreach( $users as &$user ) {
+						$user[ 'link' ] = $link . DS . 'id-' . $user[ 'id' ];
+					}
+					$this->_exec->WriteTempData( 'users' , $users );
+				break;
+				case 'id' . DS . 'users' :
+					$userModel = $this->_exec->GetObjectByAlias( 'models_user' );
+					$id        = $router->IdNum();
+					$user      = $userModel->GetUserFromDbById( $id );
+					$this->_exec->WriteTempData( 'id' , $user );
+				break;
+				case 'id' . DS . 'categories' :
+					$categoryModel = $this->_exec->GetObjectByAlias( 'models_category' );
+					$id            = $router->IdNum();
+					$category      = $categoryModel->GetCategoryById( $id );
+					$this->_exec->WriteTempData( 'id' , $category );
 				break;
 			}
 			return $view;

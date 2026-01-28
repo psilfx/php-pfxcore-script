@@ -7,7 +7,6 @@
 												[ [ "text" => "Обсудить детали"  , "callback_data" => "details" ] ] ) ,
 					'keyboard_inline_current' => 0 ,
 					'keyboard_resize' => true ,
-					'chat_id' => 0 ,
-											
-					'rewrite' => true );
+					'chat_id' => 0
+				);
 ?>
